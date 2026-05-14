@@ -1,0 +1,15 @@
+# Dependências
+node_modules/
+
+# Segredos
+.env
+
+# Build
+dist/
+build/
+
+# Logs
+*.log
+
+# Sistema
+.DS_Store

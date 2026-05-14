@@ -1,0 +1,211 @@
+
+:root {
+  --prussian-blue: #13293D;
+  --sapphire-blue: #006494;
+  --celadon-blue: #247BA0;
+  --carolina-blue: #1B98E0;
+  --azure-web: #E8F1F2;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: linear-gradient(135deg, var(--prussian-blue), var(--celadon-blue));
+}
+
+.login-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 350px;
+}
+
+.avatar-circle {
+  width: 80px;
+  height: 80px;
+  background-color: var(--prussian-blue);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: -40px; /* Sobrepõe o card */
+  z-index: 2;
+  border: 2px solid var(--azure-web);
+}
+
+.avatar-circle svg {
+  width: 40px;
+  color: var(--azure-web);
+}
+
+.login-card {
+  background: rgba(232, 241, 242, 0.2); /* Azure com transparência */
+  backdrop-filter: blur(10px);
+  padding: 60px 30px 30px 30px;
+  border-radius: 25px;
+  width: 100%;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.input-group {
+  display: flex;
+  background-color: var(--prussian-blue);
+  border-radius: 5px;
+  margin-bottom: 15px;
+  overflow: hidden;
+  border: 1px solid var(--sapphire-blue);
+}
+
+.input-icon {
+  padding: 12px;
+  background-color: rgba(255, 255, 255, 0.1);
+  color: var(--azure-web);
+  display: flex;
+  align-items: center;
+}
+
+input {
+  width: 100%;
+  padding: 12px;
+  background: transparent;
+  border: none;
+  color: var(--azure-web);
+  outline: none;
+}
+
+input::placeholder {
+  color: rgba(232, 241, 242, 0.6);
+}
+
+
+.form-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.75rem;
+  color: var(--azure-web);
+  margin-top: 10px;
+}
+
+.remember-me {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+}
+
+.forgot-pass {
+  color: var(--azure-web);
+  text-decoration: none;
+  opacity: 0.8;
+}
+
+.forgot-pass:hover {
+  opacity: 1;
+}
+
+.btn-login {
+  width: 80%;
+  padding: 12px;
+  margin-top: -20px; /* Efeito da imagem */
+  background: linear-gradient(to right, var(--celadon-blue), var(--carolina-blue));
+  border: none;
+  border-radius: 15px;
+  color: white;
+  font-weight: bold;
+  letter-spacing: 1px;
+  cursor: pointer;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  transition: transform 0.2s;
+  z-index: 3;
+}
+
+.btn-login:hover {
+  transform: scale(1.03);
+  background: var(--carolina-blue);
+}
+
+
+.signup-text {
+  margin-top: 25px;
+  font-size: 0.85rem;
+  color: var(--azure-web);
+}
+
+.signup-text a {
+  color: var(--carolina-blue);
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.login-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 90%;
+  max-width: 380px; 
+  padding: 20px 0;
+}
+
+.login-card {
+  background: rgba(232, 241, 242, 0.15);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px); 
+  padding: 60px 25px 30px 25px;
+  border-radius: 25px;
+  width: 100%;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+@media (max-width: 360px) {
+  .login-card {
+    padding: 50px 15px 20px 15px;
+  }
+  
+  .avatar-circle {
+    width: 70px;
+    height: 70px;
+    margin-bottom: -35px;
+  }
+
+  .form-footer {
+    flex-direction: column; 
+    gap: 10px;
+    align-items: flex-start;
+  }
+
+  .btn-login {
+    width: 90%;
+    font-size: 0.9rem;
+  }
+}
+
+
+@media (max-height: 500px) {
+  body {
+    height: auto;
+    padding: 50px 0;
+  }
+  
+  .avatar-circle {
+    display: none; 
+  }
+
+  .login-card {
+    margin-top: 0;
+    padding-top: 30px;
+  }
+}
