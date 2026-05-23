@@ -5,20 +5,17 @@ document.addEventListener('DOMContentLoaded', async () => {
     const productsGrid = document.getElementById('products-grid');
 
     try {
-        // 1. Verifica a sessão do usuário no banco de dados
         const authResponse = await fetch('/auth/me');
         const authData = await authResponse.json();
 
-        // if (!authResponse.ok) {
-        //     window.location.href = '/login';
-        //     return;
-        // }
+        if (!authResponse.ok) {
+            window.location.href = '/login';
+            return;
+        }
 
-        // 2. Preenche o Header com os dados da Entity User
         usernameDisplay.textContent = authData.username;
         avatarDisplay.textContent = authData.username.charAt(0).toUpperCase();
 
-        // 3. Busca os produtos da Entity Product
         const productsResponse = await fetch('/products');
         const products = await productsResponse.json();
 
@@ -27,20 +24,16 @@ document.addEventListener('DOMContentLoaded', async () => {
             return;
         }
 
-        // Limpa o grid e injeta os produtos dinamicamente
         productsGrid.innerHTML = '';
         
         products.forEach(product => {
-            // Formatação de Preço (R$)
             const priceFormatted = new Intl.NumberFormat('pt-BR', {
                 style: 'currency',
                 currency: 'BRL'
             }).format(product.price);
 
-            // Formatação de Data (Entidade Product.createdAt)
             const dateFormatted = new Date(product.createdAt).toLocaleDateString('pt-BR');
 
-            // Template do Card com as cores: --color-1, --color-2, etc.
             const productCard = `
                 <article class="product-card">
                     <div class="card-body">
