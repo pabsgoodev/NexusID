@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NexusID - Dashboard</title>
+    <link rel="stylesheet" href="../styles/dashboard.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <header class="navbar">
+        <div class="container header-content">
+            <div class="logo">
+                Nexus<span>ID</span>
+            </div>
+            
+            <div class="user-profile">
+                <span id="username-display">Nome do Usuário</span>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="dashboard-header">
+            <div>
+                <h1>Dashboard de Produtos</h1>
+                <p>Gerencie as listagens da plataforma</p>
+            </div>
+            <button class="btn-primary"><span>+</span> Novo Produto</button>
+        </section>
+
+        <div id="products-grid" class="grid-container">
+            
+            <article class="product-card">
+                <div class="card-body">
+                    <h2 class="product-title">Título do Produto</h2>
+                    <div class="product-price">R$ 0,00</div>
+                    <p class="product-description">
+                        A descrição do produto vinda do banco de dados aparecerá aqui, limitada a um espaço harmonioso.
+                    </p>
+                    
+                    <div class="product-meta">
+                        <small>Criado em: <span class="created-at">--/--/--</span></small>
+                    </div>
+                </div>
+                
+                <div class="card-footer">
+                    <a href="#" class="btn-contact">Contatar</a>
+                </div>
+            </article>
+
+        </div>
+    </main>
+
+    <script src="../scripts/dashboard.js"></script>
+</body>
+</html>
