@@ -28,6 +28,6 @@ export const AppDataSource = new DataSource({
         rejectUnauthorized: false 
     },
     synchronize: false, 
-    logging: false,
+    logging: true,
     entities: [User, Product],
 });
