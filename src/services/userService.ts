@@ -5,6 +5,7 @@ import { AppDataSource } from '../database/connection';
 
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
+import { Request, Response } from 'express';
 
 type Result<T, E> = readonly [T, null] | readonly [null, E];
 
@@ -14,8 +15,10 @@ export class UserService {
 
     async exeRegister(
         username: string,
-        password: string
-    ): Promise<Result<{ user: { id: number; username: string }, token: string }, Error>> {
+        password: string,
+        req: Request,
+        res: Response
+    ): Promise<Result<{ user: { id: number; username: string }, x: string }, Error>> {
 
         try {
 
@@ -47,14 +50,21 @@ export class UserService {
                 secret,
                 { expiresIn: '1h' }
             );
+                res.cookie('token', token, {
+                    httpOnly: true,
+                    secure: true,
+                    sameSite: 'strict',
+                    maxAge: 7 * 24 * 60 * 60 * 1000
+                });
 
+                const x = 'Success';
             return [
                 {
                     user: {
                         id: user.id,
                         username: user.username
                     },
-                    token
+                    x
                 },
                 null
             ];
@@ -69,8 +79,10 @@ export class UserService {
 
     async exeLogin(
         username: string,
-        password: string
-    ): Promise<Result<{ user: { id: number; username: string }, token: string }, Error>> {
+        password: string,
+        req: Request,
+        res: Response
+    ): Promise<Result<{ user: { id: number; username: string }, x: string }, Error>> {
         try {
             const user = await this.userRepository.findOne({
                 where: { username },
@@ -97,20 +109,56 @@ export class UserService {
                 secret,
                 { expiresIn: '1h' }
             );
-            
+
+                res.cookie('token', token, {
+                    httpOnly: true,
+                    secure: true,
+                    sameSite: 'strict',
+                    maxAge: 7 * 24 * 60 * 60 * 1000
+                });
+            const x = 'Success';
             return [
                 {
                     user: {
                         id: user.id,
                         username: user.username
                     },
-                    token
+                    x
                 },
                 null
             ];
 
         } catch (error) {
 
+            return [null, new Error('Internal server error')];
+        }
+    }
+
+    async getMe(req: Request & { session?: { userId?: number }}): Promise<Result<{ id: number; username: string }, Error>>{
+        const userId = req.session?.userId;
+
+        if (!userId) {
+            return [null, new Error('User not authenticated')];
+        }
+
+        try {
+            const user = await this.userRepository.findOne({
+                where: { id: userId },
+                select: ['id', 'username']
+            });
+
+            if (!user) {
+                return [null, new Error('User not found')];
+            }
+
+            return [
+                {
+                    id: user.id,
+                    username: user.username
+                },
+                null
+            ];
+        } catch (error) {
             return [null, new Error('Internal server error')];
         }
     }
