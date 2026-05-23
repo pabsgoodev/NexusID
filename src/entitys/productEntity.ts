@@ -20,6 +20,9 @@ export class Product {
     @Column({ type: "text", nullable: true })
     description!: string;
 
+    @Column({ type: 'text', nullable: true })
+    phone!: string;
+
     @CreateDateColumn()
     createdAt!: Date;
 
