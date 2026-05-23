@@ -1,42 +1,58 @@
 import 'reflect-metadata';
 import dotenv from 'dotenv';
-import express from 'express'
+import express from 'express';
 import helmet from 'helmet';
 import cors from 'cors';
-import path from 'path'; 
+import path from 'path';
+import cookieParser from 'cookie-parser';
+
 import { corsOptions } from './middlewares/cors';
 import { AppDataSource } from './database/connection';
 
+import router from './routes/routes';
+
 dotenv.config();
+
 const app = express();
+app.use(cors(corsOptions))
+
 const PORT = process.env.PORT || 3000;
-const publicPath = path.join(process.cwd(), 'src', 'public');
 
 app.use(helmet());
-app.use(express.json());
-app.use(cors(corsOptions));
 
-app.get("/", (req, res) => {
-  try {
-    res.sendFile(path.join(publicPath, 'login.html'));
-  } catch (error) {
-    res.status(500).send("Erro ao carregar o index.html");
-  }
-});
-
-if (process.env.NODE_ENV !== 'production') {
-    app.listen(PORT, () => console.log(`Rodando na porta ${PORT}`));
+if (process.env.NODE_ENV === 'production') {
+    console.log('Modo produção');
 }
 
-export default app;
+app.use(express.json());
+app.use(cookieParser());
+
+app.use(
+    express.static(
+        path.join(process.cwd(), 'src', 'public')
+    )
+);
+
+app.use('/', router);
+
+router.get('/', (req, res) => {
+    res.redirect('/login');
+});
 
 AppDataSource.initialize()
     .then(() => {
-        console.log("Banco conectado com sucesso");
+
+        console.log('Banco conectado');
+
         app.listen(PORT, () => {
-            console.log(`Servidor rodando em http://localhost:${PORT}`);
+
+            console.log(
+                `Servidor rodando na porta ${PORT}`
+            );
         });
+
     })
     .catch((error) => {
-        console.error("Erro ao conectar no banco:", error);
+
+        console.error(error);
     });
