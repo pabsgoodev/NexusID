@@ -21,7 +21,7 @@ export class UserController {
 
            const { username, password } = parsed.data;
 
-           const [data, error] = await this.userService.exeRegister(username, password);
+           const [data, error] = await this.userService.exeRegister(username, password, req, res);
            if (error){
             return res.status(400).json({ error: error.message})
            }
@@ -45,7 +45,7 @@ export class UserController {
             }
 
             const {username, password} = parsed.data;
-            const [data, error] = await this.userService.exeLogin(username, password)
+            const [data, error] = await this.userService.exeLogin(username, password, req, res);
             if (error){
                 return res.status(400).json({ error: error.message})
             }
@@ -55,5 +55,18 @@ export class UserController {
             return res.status(500).json({ error: 'Internal server error' });
         }
     }
+async me(req: Request, res: Response) {
+    try {
+        const [data, error] = await this.userService.getMe(req);
+
+        if (error) {
+            return res.status(401).json({ error: error.message });
+        }
+
+        return res.json(data);
+    } catch (error) {
+        return res.status(500).json({ error: 'Internal server error' });
+    }
+}
     
 }
