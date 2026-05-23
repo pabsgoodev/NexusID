@@ -20,7 +20,6 @@
 import { DataSource } from "typeorm";
 import { User } from "../entitys/userEntity";
 import { Product } from "../entitys/productEntity";
-// Importe suas entidades aqui (User, Product, etc)
 
 export const AppDataSource = new DataSource({
     type: "postgres",
