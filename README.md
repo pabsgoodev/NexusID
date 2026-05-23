@@ -43,7 +43,7 @@ O projeto segue princípios de **Clean Code**, separando responsabilidades de fo
 
 1. **Clone o repositório:**
 ```bash
-git clone 
+git clone https://github.com/pabsgoodev/NexusID.git
 cd nexusid
 
 ```
