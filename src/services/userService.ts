@@ -134,32 +134,34 @@ export class UserService {
         }
     }
 
-    async getMe(req: Request & { session?: { userId?: number }}): Promise<Result<{ id: number; username: string }, Error>>{
-        const userId = req.session?.userId;
+async getMe(req: Request): Promise<Result<{ id: number; username: string }, Error>> {
+    try {
+        const token = req.cookies.token;
 
-        if (!userId) {
+        if (!token) {
             return [null, new Error('User not authenticated')];
         }
 
-        try {
-            const user = await this.userRepository.findOne({
-                where: { id: userId },
-                select: ['id', 'username']
-            });
+        const secret = process.env.JWT_SECRET as string;
+        const decoded = jwt.verify(token, secret) as { userId: number };
 
-            if (!user) {
-                return [null, new Error('User not found')];
-            }
+        if (!decoded || !decoded.userId) {
+            return [null, new Error('Invalid token')];
+        }
 
-            return [
-                {
-                    id: user.id,
-                    username: user.username
-                },
-                null
-            ];
-        } catch (error) {
-            return [null, new Error('Internal server error')];
+        const user = await this.userRepository.findOne({
+            where: { id: decoded.userId },
+            select: ['id', 'username']
+        });
+
+        if (!user) {
+            return [null, new Error('User not found')];
+        }
+
+        return [{ id: user.id, username: user.username }, null];
+
+    } catch (error) {
+        return [null, new Error('Session expired or invalid')];
         }
     }
 }
