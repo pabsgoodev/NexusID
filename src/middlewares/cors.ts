@@ -1,6 +1,6 @@
 const cors = require('cors');
 
-const whiteList = ['http://localhost:3000', 'https://myapp.com'];
+const whiteList = ['http://localhost:3000', 'https://nexus-id-roan.vercel.app'];
 
 export const corsOptions = {
   origin: function (origin: string | undefined, callback: (err: Error | null, allow?: boolean) => void) {
@@ -13,5 +13,5 @@ export const corsOptions = {
   methods: ['GET', 'POST', 'PUT', 'DELETE'], 
   allowedHeaders: ['Content-Type', 'Authorization'], 
   optionsSuccessStatus: 200,
-  Credentials: true,
+  credentials: true,
 };

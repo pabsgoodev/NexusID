@@ -1,4 +1,4 @@
-// 1. Função isolada para carregar produtos (para ser usada no início e após criar novo produto)
+
 async function loadProducts() {
     const productsGrid = document.getElementById('products-grid');
     if (!productsGrid) return;
@@ -56,7 +56,6 @@ async function loadProducts() {
     }
 }
 
-// 2. Evento Inicial (Autenticação + Primeira Carga)
 document.addEventListener('DOMContentLoaded', async () => {
     const usernameDisplay = document.getElementById('username-display');
     const avatarDisplay = document.querySelector('.user-avatar');
@@ -74,7 +73,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (usernameDisplay) usernameDisplay.textContent = authData.username;
         if (avatarDisplay) avatarDisplay.textContent = authData.username.charAt(0).toUpperCase();
 
-        // Carrega a lista de produtos assim que a página abrir
         await loadProducts();
 
     } catch (error) {
@@ -82,7 +80,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 });
 
-// 3. Controle do Modal e Formulário
 const btnCreate = document.getElementById('btn-create');
 const modal = document.getElementById('modal-container');
 const btnClose = document.getElementById('btn-close-modal');
@@ -104,7 +101,6 @@ window.addEventListener('click', (e) => {
     if (e.target === modal) modal.style.display = 'none';
 });
 
-// 4. Envio do formulário
 if (formProduct) {
     formProduct.addEventListener('submit', async (e) => {
         e.preventDefault();
@@ -128,7 +124,6 @@ if (formProduct) {
                 modal.style.display = 'none';
                 formProduct.reset();
                 
-                // AGORA FUNCIONA: Chama a função que definimos no passo 1
                 await loadProducts(); 
             } else {
                 const errData = await response.json();

@@ -8,30 +8,21 @@ import cookieParser from 'cookie-parser';
 
 import { corsOptions } from './middlewares/cors';
 import { AppDataSource } from './database/connection';
-
 import router from './routes/routes';
 
 dotenv.config();
 
 const app = express();
-app.use(cors(corsOptions))
 
-const PORT = process.env.PORT || 3000;
-
-app.use(helmet());
-
-if (process.env.NODE_ENV === 'production') {
-    console.log('Modo produção');
-}
-
+// Middlewares
+app.use(cors(corsOptions));
+app.use(helmet({
+    contentSecurityPolicy: false, 
+}));
 app.use(express.json());
 app.use(cookieParser());
 
-app.use(
-    express.static(
-        path.join(process.cwd(), 'src', 'public')
-    )
-);
+app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', router);
 
@@ -39,20 +30,25 @@ router.get('/', (req, res) => {
     res.redirect('/login');
 });
 
-AppDataSource.initialize()
-    .then(() => {
+const startServer = async () => {
+    if (!AppDataSource.isInitialized) {
+        try {
+            await AppDataSource.initialize();
+            console.log('Banco conectado com sucesso');
+        } catch (error) {
+            console.error('Erro ao conectar no banco:', error);
+        }
+    }
+};
 
-        console.log('Banco conectado');
+startServer();
 
-        app.listen(PORT, () => {
 
-            console.log(
-                `Servidor rodando na porta ${PORT}`
-            );
-        });
-
-    })
-    .catch((error) => {
-
-        console.error(error);
+if (process.env.NODE_ENV !== 'production') {
+    const PORT = process.env.PORT || 3000;
+    app.listen(PORT, () => {
+        console.log(`Servidor local rodando na porta ${PORT}`);
     });
+}
+
+export default app;
