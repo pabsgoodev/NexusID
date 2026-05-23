@@ -24,13 +24,3 @@ async function register(event) {
     }
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-    const form = document.getElementById('register-form');
-    
-    if (form) {
-        form.addEventListener('submit', register);
-        console.log("Evento de registro ativado!");
-    } else {
-        console.error("Erro: Formulário 'register-form' não encontrado.");
-    }
-});
